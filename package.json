@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PHIDIAS0303"
+    "url": "git+https://github.com/PHIDIAS0303/ClusterChatSync"
   },
   "keywords": [
     "clusterio",
@@ -19,15 +19,15 @@
   "author": "PHIDIAS <github@aperx.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PHIDIAS0303/issues"
+    "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
   },
-  "homepage": "https://github.com/PHIDIAS0303#readme",
+  "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
   "peerDependencies": {
-    "@clusterio/lib": "^2.0.0-alpha.14"
+    "@clusterio/lib": "^2.0.0-alpha.19"
   },
   "devDependencies": {
-    "@clusterio/lib": "^2.0.0-alpha.14",
-    "@clusterio/web_ui": "^2.0.0-alpha.14",
+    "@clusterio/lib": "^2.0.0-alpha.19",
+    "@clusterio/web_ui": "^2.0.0-alpha.19",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.9.0"
