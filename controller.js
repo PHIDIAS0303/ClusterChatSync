@@ -92,18 +92,22 @@ class ControllerPlugin extends BaseControllerPlugin {
 				nrc_msg = `${dt} ${nrc_msg}`
 			}
 
-			while (nrc_msg.length > 0) {
-				let nrc_cmsg = nrc_msg.slice(0, 1950);
-				let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
-		
-				if (nrc_lindex !== -1) {
-					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex).trim();
-					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
-				} else {
-					nrc_msg = nrc_msg.slice(1950).trim();
+			if (nrc_msg.length <= 1950) {
+				await channel.send(nrc_msg, { allowedMentions: { parse: [] }});
+			} else {
+				while (nrc_msg.length > 0) {
+					let nrc_cmsg = nrc_msg.slice(0, 1950);
+					let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
+			
+					if (nrc_lindex !== -1) {
+						nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
+						nrc_msg = nrc_msg.slice(nrc_lindex).trim();
+					} else {
+						nrc_msg = nrc_msg.slice(1950).trim();
+					}
+
+					await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
 				}
-		
-				await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
 			}
 		}
 	}
