@@ -92,9 +92,6 @@ class ControllerPlugin extends BaseControllerPlugin {
 				nrc_msg = dt + ' ' + nrc_msg
 			}
 
-			await channel.send(nrc_msg, { allowedMentions: { parse: [] }});
-
-			/*
 			while (nrc_msg.length > 0) {
 				let nrc_cmsg = nrc_msg.slice(0, 1950);
 				let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
@@ -108,7 +105,6 @@ class ControllerPlugin extends BaseControllerPlugin {
 		
 				await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
 			}
-			*/
 		}
 	}
 }
