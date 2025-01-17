@@ -1,2 +1,4 @@
-# ClusterChatSync
-Clusterio plugin - One way discord chat sync
+Cluster Chat Sync
+========================
+
+This is a custom chat sync, one-way only at this time.
