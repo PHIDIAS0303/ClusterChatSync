@@ -20,7 +20,7 @@ class InstancePlugin extends BaseInstancePlugin {
 	async onOutput(output) {
 		if (output.type == "action") {
 			if (this.host.connector.connected) {
-				this.sendChat(output.action, output.message);
+				this.instance.sendTo("controller", new InstanceActionEvent(this.instance.name, output.action, output.message));
 			} else {
 				this.messageQueue.push([output.action, output.message]);
 			}
