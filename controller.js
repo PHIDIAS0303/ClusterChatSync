@@ -84,14 +84,26 @@ class ControllerPlugin extends BaseControllerPlugin {
 			const nrc_index = nrc.indexOf(":");
 			const nrc_username = nrc.substring(0, nrc_index);
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
-			const nrc_msg = `**\`${nrc_username}\`** ${nrc_message}`
+			let nrc_msg = `**\`${nrc_username}\`** ${nrc_message}`
 
 			if (this.controller.config.get("chat_sync.datetime_on_message")) {
 				let now = new Date();
 				let dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-				await channel.send(`${dt} ${nrc_msg}`, { allowedMentions: { parse: [] }});
-			} else {
-				await channel.send(nrc_msg, { allowedMentions: { parse: [] }});
+				nrc_msg = dt + ' ' + nrc_msg
+			}
+
+			while (nrc_msg.length > 0) {
+				let nrc_cmsg = nrc_msg.slice(0, 1950);
+				let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
+		
+				if (nrc_lindex !== -1) {
+					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
+					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
+				} else {
+					nrc_msg = nrc_msg.slice(1950).trim();
+				}
+		
+				await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
 			}
 		}
 	}
