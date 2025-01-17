@@ -60,7 +60,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 	async handleInstanceAction(request, src) {
 		if (request.action === "CHAT" || request.action === "SHOUT") {
-			const channel_id = tonumber(this.controller.config.get("chat_sync.discord_channel_mapping")[this.controller.instances.get(src.id) ?? ""]);
+			const channel_id = this.controller.config.get("chat_sync.discord_channel_mapping")[this.controller.instances.get(src.id) ?? ""];
 			let channel = null;
 
 			if (!channel_id) {
