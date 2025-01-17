@@ -7,6 +7,21 @@ class InstancePlugin extends BaseInstancePlugin {
 		this.messageQueue = [];
 	}
 
+	onControllerConnectionEvent(event) {
+		if (event === "connect") {
+			for (let [action, content] of this.messageQueue) {
+				this.sendChat(action, content);
+			}
+			this.messageQueue = [];
+		}
+	}
+
+	sendChat(action, content) {
+		this.instance.sendTo("controller",
+			new InstanceActionEvent(this.instance.name, action, content)
+		);
+	}
+
 	async onOutput(output) {
 		if (output.type == "action") {
 			this.messageQueue.push([output.action, output.message]);
