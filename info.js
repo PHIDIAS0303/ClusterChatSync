@@ -53,8 +53,7 @@ const plugin = {
 			description: "Putting the discord channel id and instance relations here",
 			type: "object",
 			initialValue: {
-				"S1": "123",
-				"S2": "123",
+				"S1": "123"
 			},
 		},
 	},
