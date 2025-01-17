@@ -84,12 +84,12 @@ class ControllerPlugin extends BaseControllerPlugin {
 			const nrc_index = nrc.indexOf(":");
 			const nrc_username = nrc.substring(0, nrc_index);
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
-			let nrc_msg = `**\`${nrc_username}\`** ${nrc_message}`
+			let nrc_msg = `**\`${nrc_username}\`**: ${nrc_message}`
 
 			if (this.controller.config.get("chat_sync.datetime_on_message")) {
 				let now = new Date();
 				let dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-				nrc_msg = dt + ' ' + nrc_msg
+				nrc_msg = `${dt} ${nrc_msg}`
 			}
 
 			while (nrc_msg.length > 0) {
