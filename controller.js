@@ -97,7 +97,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 				let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
 		
 				if (nrc_lindex !== -1) {
-					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
+					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex).trim();
 					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
 				} else {
 					nrc_msg = nrc_msg.slice(1950).trim();
