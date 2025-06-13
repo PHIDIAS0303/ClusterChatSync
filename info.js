@@ -56,6 +56,25 @@ const plugin = {
 				"S1": "123"
 			},
 		},
+		"chat_sync.use_libretranslate": {
+			title: "Translate Message",
+			description: "Using self host or paid service",
+			type: "boolean",
+			initialValue: false,
+			optional: true,
+		},
+		"chat_sync.libretranslate_url": {
+			title: "Translate Server URL",
+			description: "Including http protocol, and the port if needed",
+			type: "string",
+			optional: true,
+		},
+		"chat_sync.libretranslate_key": {
+			title: "Translate Server API Key",
+			description: "The API key for the translate server",
+			type: "string",
+			optional: true,
+		},
 	},
 
 	messages: [
