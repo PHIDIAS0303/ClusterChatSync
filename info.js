@@ -58,7 +58,7 @@ const plugin = {
 		},
 		"chat_sync.use_libretranslate": {
 			title: "Translate Message",
-			description: "Using self host or paid service",
+			description: "Using self host or paid service of libretranslate",
 			type: "boolean",
 			initialValue: false,
 			optional: true,
@@ -72,6 +72,12 @@ const plugin = {
 		"chat_sync.libretranslate_key": {
 			title: "Translate Server API Key",
 			description: "The API key for the translate server",
+			type: "string",
+			optional: true,
+		},
+		"chat_sync.libretranslate_language": {
+			title: "Translate Server Target Language",
+			description: "Put a space between each language, using ISO 639-1 codes",
 			type: "string",
 			optional: true,
 		},

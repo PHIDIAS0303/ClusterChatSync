@@ -56,7 +56,6 @@ class LibreTranslateAPI {
             if (detection.confidence > 10.0) {
                 for (const targetLang of targetLanguages) {                    
                     if (!((detection.language === 'zh-Hans' || detection.language === 'zh-Hant') && (targetLang === 'zh-Hans' || targetLang === 'zh-Hant')) && detection.language !== targetLang && this.allowedLanguages.includes(detection.language) && this.allowedLanguages.includes(targetLang)) {
-                        console.log(`${detection.language} -> ${targetLang}`);
                         result.action = true;
                         const translated = await this.translateRequest(query, detection.language, targetLang);
                         result.passage.push(translated);
@@ -75,13 +74,18 @@ class LibreTranslateAPI {
 class ControllerPlugin extends BaseControllerPlugin {
 	async init() {
 		this.controller.config.on('fieldChanged', (field, curr, prev) => {
-			if (field === 'chat_sync.discord_bot_token') {
-				this.connect().catch(err => { this.logger.error(`Unexpected error:\n${err.stack}`); });
-			}
+			if (field === 'chat_sync.discord_bot_token') this.connect().catch(err => {this.logger.error(`Unexpected error:\n${err.stack}`)});
 		});
 
 		this.controller.handle(InstanceActionEvent, this.handleInstanceAction.bind(this));
 		this.client = null;
+
+		if (this.controller.config.get('chat_sync.use_libretranslate')) {
+			this.translator = new LibreTranslateAPI(this.controller.config.get('chat_sync.libretranslate_url'), this.controller.config.get('chat_sync.libretranslate_key'));
+			await translator.init();
+			this.translator_language = this.controller.config.get('chat_sync.libretranslate_language').trim().split(/\s+/);
+		}
+
 		await this.connect();
 	}
 
@@ -127,57 +131,61 @@ class ControllerPlugin extends BaseControllerPlugin {
 		}
 	}
 
+	async sendMessage(nrc_msg) {
+		const channel_id = this.controller.config.get('chat_sync.discord_channel_mapping')[request.instanceName];
+		let channel = null;
+
+		if (!channel_id) return;
+		
+		try {
+			channel = await this.client.channels.fetch(channel_id);
+		} catch (err) {
+			if (err.code !== 10003) throw err;
+		}
+
+		if (channel === null) {
+			this.logger.error(`chat sync discord hannel ID ${channel_id} was not found`);
+			return;
+		}
+		
+		if (this.controller.config.get("chat_sync.datetime_on_message")) {
+			let now = new Date();
+			let dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+			nrc_msg = `${dt} ${nrc_msg}`
+		}
+
+		if (nrc_msg.length <= 1950) {
+			await channel.send(nrc_msg, { allowedMentions: { parse: [] }});
+		} else {
+			while (nrc_msg.length > 0) {
+				let nrc_cmsg = nrc_msg.slice(0, 1950);
+				let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
+			
+				if (nrc_lindex !== -1) {
+					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
+					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
+				} else {
+					nrc_msg = nrc_msg.slice(1950).trim();
+				}
+
+				await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
+			}
+		}
+	}
+
 	async handleInstanceAction(request, src) {
 		if (request.action === 'CHAT' || request.action === 'SHOUT') {
-			const channel_id = this.controller.config.get('chat_sync.discord_channel_mapping')[request.instanceName];
-			let channel = null;
-
-			if (!channel_id) {
-				return;
-			}
-
-			try {
-				channel = await this.client.channels.fetch(channel_id);
-			} catch (err) {
-				if (err.code !== 10003) {
-					throw err;
-				}
-			}
-
-			if (channel === null) {
-				this.logger.error(`chat sync discord hannel ID ${channel_id} was not found`);
-				return;
-			}
-
 			const nrc = request.content.replace(/\[special-item=.*?\]/g, '<blueprint>').replace(/<@/g, '<@\u200c>');
 			const nrc_index = nrc.indexOf(":");
 			const nrc_username = nrc.substring(0, nrc_index);
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
-			let nrc_msg = `**\`${nrc_username}\`**: ${nrc_message}`
-
-			if (this.controller.config.get("chat_sync.datetime_on_message")) {
-				let now = new Date();
-				let dt = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-				nrc_msg = `${dt} ${nrc_msg}`
-			}
-
-			if (nrc_msg.length <= 1950) {
-				await channel.send(nrc_msg, { allowedMentions: { parse: [] }});
-			} else {
-				while (nrc_msg.length > 0) {
-					let nrc_cmsg = nrc_msg.slice(0, 1950);
-					let nrc_lindex = nrc_cmsg.lastIndexOf(' ');
 			
-					if (nrc_lindex !== -1) {
-						nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
-						nrc_msg = nrc_msg.slice(nrc_lindex).trim();
-					} else {
-						nrc_msg = nrc_msg.slice(1950).trim();
-					}
-
-					await channel.send(nrc_cmsg, { allowedMentions: { parse: [] }});
-				}
+			if (this.controller.config.get('chat_sync.use_libretranslate')) {
+				const result = await translator.translate(nrc_message, this.translator_language);
+				this.sendChat(`[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`);
 			}
+
+			await sendMessage(`**\`${nrc_username}\`**: ${nrc_message}`)
 		}
 	}
 }
