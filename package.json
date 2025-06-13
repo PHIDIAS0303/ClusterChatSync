@@ -15,7 +15,8 @@
     "aperx",
     "clusterio",
     "factorio",
-    "discord"
+    "discord",
+    "clusterio-plugin"
   ],
   "author": "PHIDIAS <phidias@aperx.org>",
   "license": "MIT",
