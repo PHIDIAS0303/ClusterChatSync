@@ -1,6 +1,6 @@
 {
   "name": "@phidias0303/clusterio_chat_sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One way chat sync",
   "main": "info.js",
   "scripts": {
