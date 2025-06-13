@@ -82,7 +82,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 		if (this.controller.config.get('chat_sync.use_libretranslate')) {
 			this.translator = new LibreTranslateAPI(this.controller.config.get('chat_sync.libretranslate_url'), this.controller.config.get('chat_sync.libretranslate_key'));
-			await translator.init();
+			await this.translator.init();
 			this.translator_language = this.controller.config.get('chat_sync.libretranslate_language').trim().split(/\s+/);
 		}
 
@@ -181,7 +181,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
 			
 			if (this.controller.config.get('chat_sync.use_libretranslate')) {
-				const result = await translator.translate(nrc_message, this.translator_language);
+				const result = await this.translator.translate(nrc_message, this.translator_language);
 				this.sendChat(`[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`);
 
 				// await sendMessage(`**\`${nrc_username}\`**: ${result}`)
