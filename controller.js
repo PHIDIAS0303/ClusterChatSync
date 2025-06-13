@@ -183,6 +183,8 @@ class ControllerPlugin extends BaseControllerPlugin {
 			if (this.controller.config.get('chat_sync.use_libretranslate')) {
 				const result = await translator.translate(nrc_message, this.translator_language);
 				this.sendChat(`[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`);
+
+				// await sendMessage(`**\`${nrc_username}\`**: ${result}`)
 			}
 
 			await sendMessage(`**\`${nrc_username}\`**: ${nrc_message}`)
