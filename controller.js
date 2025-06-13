@@ -74,7 +74,7 @@ class LibreTranslateAPI {
 class ControllerPlugin extends BaseControllerPlugin {
 	async init() {
 		this.controller.config.on('fieldChanged', (field, curr, prev) => {
-			if (field === 'chat_sync.discord_bot_token') this.connect().catch(err => {this.logger.error(`Unexpected error:\n${err.stack}`)});
+			if (field === 'chat_sync.discord_bot_token') this.connect().catch(err => {this.logger.error(`Unexpected error:\n${err.stack}`);});
 		});
 
 		this.controller.handle(InstanceActionEvent, this.handleInstanceAction.bind(this));
