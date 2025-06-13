@@ -3,10 +3,79 @@ const Discord = require("discord.js");
 const { BaseControllerPlugin } = require("@clusterio/controller");
 const { InstanceActionEvent } = require("./info.js");
 
+class LibreTranslateAPI {
+    constructor(url, apiKey) {
+        if (!url) throw new Error('url is required for LibreTranslate API');
+        if (!apiKey) throw new Error('API key is required for LibreTranslate API');
+        this.url = url.endsWith('/') ? url : url + '/';
+        this.apiKey = apiKey;
+        this.allowedLanguages = [];
+    }
+
+    async init() {
+        try {
+            const response = await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'});
+            const data = await response.json();
+            this.allowedLanguages = data[0].targets;
+        } catch (error) {
+            console.error('Failed to initialize languages:', error);
+            throw error;
+        }
+    }
+
+    async translateRequest(q, source, target) {
+        const params = new URLSearchParams();
+        params.append('q', q);
+        params.append('api_key', this.apiKey);
+        params.append('source', source);
+        params.append('target', target);
+
+        const response = await fetch(`${this.url}translate`, {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params});
+        const data = await response.json();
+        return data.translatedText;
+    }
+
+    async detectLanguage(q) {
+        const params = new URLSearchParams();
+        params.append('q', q);
+        params.append('api_key', this.apiKey);
+
+        const response = await fetch(`${this.url}detect`, {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params});
+        const data = await response.json();
+        return data[0];
+    }
+
+    async translate(query, targetLanguages = ['zh-Hant', 'en']) {
+        console.log(query);
+        
+        const result = {action: false, passage: []};
+
+        try {
+            const detection = await this.detectLanguage(query);
+            
+            if (detection.confidence > 10.0) {
+                for (const targetLang of targetLanguages) {                    
+                    if (!((detection.language === 'zh-Hans' || detection.language === 'zh-Hant') && (targetLang === 'zh-Hans' || targetLang === 'zh-Hant')) && detection.language !== targetLang && this.allowedLanguages.includes(detection.language) && this.allowedLanguages.includes(targetLang)) {
+                        console.log(`${detection.language} -> ${targetLang}`);
+                        result.action = true;
+                        const translated = await this.translateRequest(query, detection.language, targetLang);
+                        result.passage.push(translated);
+                    }
+                }
+            }
+            
+            return result;
+        } catch (error) {
+            console.error('Translation failed:', error);
+            throw error;
+        }
+    }
+}
+
 class ControllerPlugin extends BaseControllerPlugin {
 	async init() {
-		this.controller.config.on("fieldChanged", (field, curr, prev) => {
-			if (field === "chat_sync.discord_bot_token") {
+		this.controller.config.on('fieldChanged', (field, curr, prev) => {
+			if (field === 'chat_sync.discord_bot_token') {
 				this.connect().catch(err => { this.logger.error(`Unexpected error:\n${err.stack}`); });
 			}
 		});
@@ -22,10 +91,10 @@ class ControllerPlugin extends BaseControllerPlugin {
 			this.client = null;
 		}
 
-		let token = this.controller.config.get("chat_sync.discord_bot_token");
+		let token = this.controller.config.get('chat_sync.discord_bot_token');
 
 		if (!token) {
-			this.logger.warn("chat sync bot token not configured, so chat is offline");
+			this.logger.warn('chat sync bot token not configured, so chat is offline');
 			return;
 		}
 
@@ -37,10 +106,10 @@ class ControllerPlugin extends BaseControllerPlugin {
 			],
 		});
 
-		this.logger.info("chat sync is logging in to Discord");
+		this.logger.info('chat sync is logging in to Discord');
 
 		try {
-			await this.client.login(this.controller.config.get("chat_sync.discord_bot_token"));
+			await this.client.login(this.controller.config.get('chat_sync.discord_bot_token'));
 		} catch (err) {
 			this.logger.error(`chat sync have error logging in to discord, chat is offline:\n${err.stack}`);
 			this.client.destroy();
@@ -48,7 +117,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 			return;
 		}
 
-		this.logger.info("chat sync have successfully logged in");
+		this.logger.info('chat sync have successfully logged in');
 	}
 
 	async onShutdown() {
@@ -59,8 +128,8 @@ class ControllerPlugin extends BaseControllerPlugin {
 	}
 
 	async handleInstanceAction(request, src) {
-		if (request.action === "CHAT" || request.action === "SHOUT") {
-			const channel_id = this.controller.config.get("chat_sync.discord_channel_mapping")[request.instanceName];
+		if (request.action === 'CHAT' || request.action === 'SHOUT') {
+			const channel_id = this.controller.config.get('chat_sync.discord_channel_mapping')[request.instanceName];
 			let channel = null;
 
 			if (!channel_id) {
