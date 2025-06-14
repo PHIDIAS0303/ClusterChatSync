@@ -142,6 +142,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`)
 
 			if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
+				this.logger.info(`[Chat Sync] Translating message from ${request.instanceName} (${nrc_username}): ${nrc_message}`);
 				const result = await this.translator.translate(nrc_message, this.translator_language);
 
 				if (result && result.action) {
