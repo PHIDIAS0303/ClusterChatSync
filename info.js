@@ -5,7 +5,7 @@ class InstanceActionEvent {
 	static type = "event";
 	static src = "instance";
 	static dst = "controller";
-	static plugin = "chat_sync";
+	static plugin = "ClusterChatSync";
 
 	constructor(instanceName, action, content) {
 		this.instanceName = instanceName;
@@ -29,26 +29,24 @@ class InstanceActionEvent {
 }
 
 const plugin = {
-	name: "chat_sync",
-	title: "Chat Sync",
+	name: "ClusterChatSync",
+	title: "Cluster Chat Sync",
 	description: "One way chat sync.",
 	instanceEntrypoint: "instance",
 	controllerEntrypoint: "controller",
 	controllerConfigFields: {
-		"chat_sync.discord_bot_token": {
-			title: "Discord Bot Token",
+		"ClusterChatSync.discord_bot_token": {
+			title: "Discord Bot Token",	
 			description: "API Token",
-			type: "string",
-			optional: true,
+			type: "string"
 		},
-		"chat_sync.datetime_on_message": {
+		"ClusterChatSync.datetime_on_message": {
 			title: "Message Datetime",
 			description: "Append datetime in front",
 			type: "boolean",
-			initialValue: true,
-			optional: true,
+			initialValue: true
 		},
-		"chat_sync.discord_channel_mapping": {
+		"ClusterChatSync.discord_channel_mapping": {
 			title: "Channels",
 			description: "Putting the discord channel id and instance relations here",
 			type: "object",
@@ -56,33 +54,29 @@ const plugin = {
 				"S1": "123"
 			},
 		},
-		"chat_sync.use_libretranslate": {
+		"ClusterChatSync.use_libretranslate": {
 			title: "Translate Message",
 			description: "Using self host or paid service of libretranslate",
 			type: "boolean",
-			initialValue: false,
-			optional: true,
+			initialValue: false
 		},
-		"chat_sync.libretranslate_url": {
+		"ClusterChatSync.libretranslate_url": {
 			title: "Translate Server URL",
 			description: "Including http protocol, and the port if needed",
 			type: "string",
-			initialValue: "http://localhost:5000",
-			optional: true,
+			initialValue: "http://localhost:5000"
 		},
-		"chat_sync.libretranslate_key": {
+		"ClusterChatSync.libretranslate_key": {
 			title: "Translate Server API Key",
 			description: "The API key for the translate server",
 			type: "string",
-			initialValue: "123456",
-			optional: true,
+			initialValue: "123456"
 		},
-		"chat_sync.libretranslate_language": {
+		"ClusterChatSync.libretranslate_language": {
 			title: "Translate Server Target Language",
 			description: "Put a space between each language, using ISO 639-1 codes",
 			type: "string",
-			initialValue: "zh-Hants en",
-			optional: true,
+			initialValue: "zh-Hants en"
 		},
 	},
 

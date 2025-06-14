@@ -1,6 +1,6 @@
 {
   "name": "@phidias0303/clusterio_chat_sync",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "One way chat sync",
   "main": "info.js",
   "scripts": {
@@ -30,12 +30,13 @@
   "devDependencies": {
     "@clusterio/lib": "^2.0.0-alpha.21",
     "@clusterio/web_ui": "^2.0.0-alpha.21",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "webpack-merge": "^5.9.0"
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "discord.js": "^14.14.1"
+    "discord.js": "^14.19.3",
+    "node-fetch": "^3.3.2"
   },
   "publishConfig": {
     "access": "public"
