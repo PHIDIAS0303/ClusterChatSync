@@ -65,7 +65,7 @@ const plugin = {
 			title: 'Translate Server Target Language',
 			description: 'Put a space between each language, using ISO 639-1 codes',
 			type: 'string',
-			initialValue: 'zh-Hants en'
+			initialValue: 'zh-Hant en'
 		},
 	},
 	messages: [InstanceActionEvent],
