@@ -37,8 +37,6 @@ class LibreTranslateAPI {
 				return result;
 			}
 
-			this.logger.info(`${detection.confidence} ${detection.confidence}`)
-
             if (detection.confidence > MIN_CONFIDENCE_SCORE) {
                 for (const targetLang of targetLanguages) {                    
                     if (!((detection.language === 'zh-Hans' || detection.language === 'zh-Hant') && (targetLang === 'zh-Hans' || targetLang === 'zh-Hant')) && detection.language !== targetLang && this.allowedLanguages.includes(detection.language) && this.allowedLanguages.includes(targetLang)) {
@@ -144,7 +142,6 @@ class ControllerPlugin extends BaseControllerPlugin {
 			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`)
 
 			if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
-				this.logger.info(`${this.translator_language}`)
 				const result = await this.translator.translate(nrc_message, this.translator_language);
 
 				if (result && result.action) {
