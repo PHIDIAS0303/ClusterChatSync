@@ -154,6 +154,4 @@ class ControllerPlugin extends BaseControllerPlugin {
 	}
 }
 
-module.exports = {
-	ControllerPlugin
-};
+module.exports = {ControllerPlugin};
