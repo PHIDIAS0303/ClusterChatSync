@@ -21,9 +21,9 @@ class LibreTranslateAPI {
 		return response.json();
 	}
 
-    async init() {try {this.allowedLanguages = (await this.handleResponse(await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})))[0].targets || [];} catch (error) {this.logger.error('[Chat Sync] failed to initialize languages:', error);}}
-    async translateRequest(q, source, target) {try {return (await this.handleResponse(await fetch(`${this.url}translate`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey, source: source, target: target})}))).translatedText;} catch (error) {this.logger.error('[Chat Sync] Translation failed:', error);}}
-    async detectLanguage(q) {try {return (await this.handleResponse(await fetch(`${this.url}detect`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey})})))[0];} catch (error) {this.logger.error('[Chat Sync] Detection failed:', error);}}
+    async init() {try {this.allowedLanguages = (await this.handleResponse(await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})))[0].targets || [];} catch (err) {this.logger.error(`[Chat Sync] failed to initialize languages:\n${err.stack}`);}}
+    async translateRequest(q, source, target) {try {return (await this.handleResponse(await fetch(`${this.url}translate`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey, source: source, target: target})}))).translatedText;} catch (err) {this.logger.error(`[Chat Sync] Translation failed:\n${err.stack}`);}}
+    async detectLanguage(q) {try {return (await this.handleResponse(await fetch(`${this.url}detect`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey})})))[0];} catch (err) {this.logger.error(`[Chat Sync] Detection failed:\n${err.stack}`);}}
 
     async translate(query, targetLanguages = ['zh-Hant', 'en']) {
         console.log(query);
@@ -48,7 +48,7 @@ class LibreTranslateAPI {
             }
 
             return result;
-        } catch (error) {this.logger.error('[Chat Sync] translation failed:', error);}
+        } catch (err) {this.logger.error(`[Chat Sync] translation failed:\n${err.stack}`);}
     }
 }
 
