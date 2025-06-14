@@ -13,7 +13,7 @@ class InstanceActionEvent {
 		this.content = content;
 	}
 
-	static jsonSchema = {type: 'object', required: ['instanceName', 'action', 'content'], properties: {'instanceName': {type: 'string'}, 'action': {type: 'string'}, 'content': {type: 'string'}},};
+	static jsonSchema = {type: 'object', required: ['instanceName', 'action', 'content'], properties: {'instanceName': {type: 'string'}, 'action': {type: 'string'}, 'content': {type: 'string'}}};
 	static fromJSON(json) {return new this(json.instanceName, json.action, json.content);}
 }
 
@@ -68,7 +68,6 @@ const plugin = {
 			initialValue: 'zh-Hants en'
 		},
 	},
-
 	messages: [InstanceActionEvent],
 };
 
