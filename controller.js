@@ -100,16 +100,17 @@ class ControllerPlugin extends BaseControllerPlugin {
 	async sendMessage(request, nrc_msg) {
 		const channel_id = this.controller.config.get('ClusterChatSync.discord_channel_mapping')[request.instanceName];
 		if (!channel_id) return;
+		let channel;
 		
 		try {
-			let channel = await this.client.channels.fetch(channel_id);
+			channel = await this.client.channels.fetch(channel_id);
 
 			if (channel === null) {
 				this.logger.error(`[Chat Sync] Discord Channel ID ${channel_id} not found.`);
 				return;
 			}
 		} catch (err) {if (err.code !== 10003) this.logger.error(`[Chat Sync] Discord channel fetch error:\n${err.stack}`);}
-		
+
 		if (this.controller.config.get("ClusterChatSync.datetime_on_message")) {
 			let now = new Date();
 			nrc_msg = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')} ${nrc_msg}`
@@ -125,9 +126,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 				if (nrc_lindex !== -1) {
 					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
 					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
-				} else {
-					nrc_msg = nrc_msg.slice(MAX_DISCORD_MESSAGE_LENGTH).trim();
-				}
+				} else {nrc_msg = nrc_msg.slice(MAX_DISCORD_MESSAGE_LENGTH).trim();}
 
 				await channel.send(nrc_cmsg, {allowedMentions: {parse: []}});
 			}
