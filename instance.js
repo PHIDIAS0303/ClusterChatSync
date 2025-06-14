@@ -8,7 +8,7 @@ class InstancePlugin extends BaseInstancePlugin {
 
 	onControllerConnectionEvent(event) {
 		if (event === 'connect') {
-			for (let [action, content] of this.messageQueue) {this.instance.sendTo('controller', new InstanceActionEvent(this.instance.name, action, content));}
+			for (let [action, content] of this.messageQueue) {this.instance.sendTo('controller', new InstanceActionEvent(this.instance.name, action, content))};
 			this.messageQueue = [];
 		}
 	}
