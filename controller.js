@@ -45,7 +45,7 @@ class LibreTranslateAPI {
 		}
 	}
 
-    async translate(query, targetLanguages = ['zh-Hant', 'en']) {
+    async translate(query, targetLanguages) {
         console.log(query);
         const result = {action: false, passage: []};
 
