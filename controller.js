@@ -119,7 +119,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 		if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
 			this.translator = new LibreTranslateAPI(this.controller.config.get('ClusterChatSync.libretranslate_url'), this.controller.config.get('ClusterChatSync.libretranslate_key'), this.logger);
 			await this.translator.init();
-			this.translator_language = this.controller.config.get('ClusterChatSync.libretranslate_language').trim().split(/\s+/);
+			this.translator_language = this.controller.config.get('ClusterChatSync.libretranslate_language').trim().split(/\s+/) || ['zh-Hant', 'en'];
 		}
 	}
 
