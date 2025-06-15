@@ -77,7 +77,7 @@ class LibreTranslateAPI {
 class ControllerPlugin extends BaseControllerPlugin {
 	async init() {
 		this.controller.config.on('fieldChanged', (field, curr, prev) => {
-			if (field === 'chat_sync.discord_bot_token') {
+			if (field === 'ClusterChatSync.discord_bot_token') {
 				this.connect().catch(err => {
 					this.logger.error(`[Chat Sync] Discord bot token:\n${err.stack}`);
 				});
@@ -98,7 +98,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 	async connect() {
 		await this.clientDestroy();
 
-		if (!this.controller.config.get('chat_sync.discord_bot_token')) {
+		if (!this.controller.config.get('ClusterChatSync.discord_bot_token')) {
 			this.logger.error('[Chat Sync] Discord bot token not configured.');
 			return;
 		}
@@ -107,7 +107,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 		this.logger.info('[Chat Sync] Logging into Discord.');
 
 		try {
-			await this.client.login(this.controller.config.get('chat_sync.discord_bot_token'));
+			await this.client.login(this.controller.config.get('ClusterChatSync.discord_bot_token'));
 		} catch (err) {
 			this.logger.error(`[Chat Sync] Discord login error:\n${err.stack}`);
 			await this.clientDestroy();
@@ -116,10 +116,10 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 		this.logger.info('[Chat Sync] Logged in Discord successfully.');
 
-		if (this.controller.config.get('chat_sync.use_libretranslate')) {
-			this.translator = new LibreTranslateAPI(this.controller.config.get('chat_sync.libretranslate_url'), this.controller.config.get('chat_sync.libretranslate_key'), this.logger);
+		if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
+			this.translator = new LibreTranslateAPI(this.controller.config.get('ClusterChatSync.libretranslate_url'), this.controller.config.get('ClusterChatSync.libretranslate_key'), this.logger);
 			await this.translator.init();
-			this.translator_language = this.controller.config.get('chat_sync.libretranslate_language').trim().split(/\s+/) || ['zh-Hant', 'en'];
+			this.translator_language = this.controller.config.get('ClusterChatSync.libretranslate_language').trim().split(/\s+/) || ['zh-Hant', 'en'];
 		}
 	}
 
@@ -128,7 +128,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 	}
 
 	async sendMessage(request, nrc_msg) {
-		const channel_id = this.controller.config.get('chat_sync.discord_channel_mapping')[request.instanceName];
+		const channel_id = this.controller.config.get('ClusterChatSync.discord_channel_mapping')[request.instanceName];
 		if (!channel_id) return;
 		let channel;
 		
@@ -145,7 +145,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 			}
 		}
 
-		if (this.controller.config.get('chat_sync.datetime_on_message')) {
+		if (this.controller.config.get('ClusterChatSync.datetime_on_message')) {
 			let now = new Date();
 			nrc_msg = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')} ${nrc_msg}`
 		}
@@ -177,7 +177,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
 			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`);
 
-			if (this.controller.config.get('chat_sync.use_libretranslate')) {
+			if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
 				const result = await this.translator.translate(nrc_message, this.translator_language);
 
 				if (result && result.action) {
