@@ -184,7 +184,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`);
 					return `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`;
 				}
-			}			
+			}
 		}
 	}
 }
