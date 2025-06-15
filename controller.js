@@ -21,9 +21,29 @@ class LibreTranslateAPI {
 		return response.json();
 	}
 
-    async init() {try {this.allowedLanguages = (await this.handleResponse(await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})))[0].targets || [];} catch (err) {this.logger.error(`[Chat Sync] failed to initialize languages:\n${err.stack}`);}}
-    async translateRequest(q, source, target) {try {return (await this.handleResponse(await fetch(`${this.url}translate`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey, source: source, target: target})}))).translatedText;} catch (err) {this.logger.error(`[Chat Sync] Translation failed:\n${err.stack}`);}}
-    async detectLanguage(q) {try {return (await this.handleResponse(await fetch(`${this.url}detect`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey})})))[0];} catch (err) {this.logger.error(`[Chat Sync] Detection failed:\n${err.stack}`);}}
+    async init() {
+		try {
+			this.allowedLanguages = (await this.handleResponse(await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})))?.[0]?.targets || [];
+		} catch (err) {
+			this.logger.error(`[Chat Sync] failed to initialize languages:\n${err.stack}`);
+		}
+	}
+
+    async translateRequest(q, source, target) {
+		try {
+			return (await this.handleResponse(await fetch(`${this.url}translate`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey, source: source, target: target})})))?.translatedText;
+		} catch (err) {
+			this.logger.error(`[Chat Sync] Translation failed:\n${err.stack}`);
+		}
+	}
+
+    async detectLanguage(q) {
+		try {
+			return (await this.handleResponse(await fetch(`${this.url}detect`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({q: q, api_key: this.apiKey})})))?.[0];
+		} catch (err) {
+			this.logger.error(`[Chat Sync] Detection failed:\n${err.stack}`);
+		}
+	}
 
     async translate(query, targetLanguages = ['zh-Hant', 'en']) {
         console.log(query);
@@ -48,7 +68,9 @@ class LibreTranslateAPI {
             }
 
             return result;
-        } catch (err) {this.logger.error(`[Chat Sync] translation failed:\n${err.stack}`);}
+        } catch (err) {
+			this.logger.error(`[Chat Sync] translation failed:\n${err.stack}`);
+		}
     }
 }
 
@@ -68,7 +90,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 	}
 
 	async connect() {
-		await this.clientDestroy()
+		await this.clientDestroy();
 
 		if (!this.controller.config.get('ClusterChatSync.discord_bot_token')) {
 			this.logger.error('[Chat Sync] Discord bot token not configured.');
@@ -78,9 +100,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 		this.client = new Discord.Client({intents: [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.MessageContent]});
 		this.logger.info('[Chat Sync] Logging into Discord.');
 
-		try {
-			await this.client.login(this.controller.config.get('ClusterChatSync.discord_bot_token'));
-		} catch (err) {
+		try {await this.client.login(this.controller.config.get('ClusterChatSync.discord_bot_token'))} catch (err) {
 			this.logger.error(`[Chat Sync] Discord login error:\n${err.stack}`);
 			await this.clientDestroy()
 			return;
