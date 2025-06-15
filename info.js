@@ -5,7 +5,7 @@ class InstanceActionEvent {
 	static type = 'event';
 	static src = 'instance';
 	static dst = 'controller';
-	static plugin = 'ClusterChatSync';
+	static plugin = 'chat_sync';
 
 	constructor(instanceName, action, content) {
 		this.instanceName = instanceName;
@@ -25,24 +25,24 @@ class InstanceActionEvent {
 }
 
 const plugin = {
-	name: 'ClusterChatSync',
+	name: 'chat_sync',
 	title: 'Cluster Chat Sync',
 	description: 'One way chat sync.',
 	instanceEntrypoint: 'instance',
 	controllerEntrypoint: 'controller',
 	controllerConfigFields: {
-		'ClusterChatSync.discord_bot_token': {
+		'chat_sync.discord_bot_token': {
 			title: 'Discord Bot Token',	
 			description: 'API Token',
 			type: 'string'
 		},
-		'ClusterChatSync.datetime_on_message': {
+		'chat_sync.datetime_on_message': {
 			title: 'Message Datetime',
 			description: 'Append datetime in front',
 			type: 'boolean',
 			initialValue: true
 		},
-		'ClusterChatSync.discord_channel_mapping': {
+		'chat_sync.discord_channel_mapping': {
 			title: 'Channels',
 			description: 'Putting the discord channel id and instance relations here',
 			type: 'object',
@@ -50,25 +50,25 @@ const plugin = {
 				'S1': '123'
 			},
 		},
-		'ClusterChatSync.use_libretranslate': {
+		'chat_sync.use_libretranslate': {
 			title: 'Translate Message',
 			description: 'Using self host or paid service of libretranslate',
 			type: 'boolean',
 			initialValue: false
 		},
-		'ClusterChatSync.libretranslate_url': {
+		'chat_sync.libretranslate_url': {
 			title: 'Translate Server URL',
 			description: 'Including http protocol, and the port if needed',
 			type: 'string',
 			initialValue: 'http://localhost:5000'
 		},
-		'ClusterChatSync.libretranslate_key': {
+		'chat_sync.libretranslate_key': {
 			title: 'Translate Server API Key',
 			description: 'The API key for the translate server',
 			type: 'string',
 			initialValue: '123456'
 		},
-		'ClusterChatSync.libretranslate_language': {
+		'chat_sync.libretranslate_language': {
 			title: 'Translate Server Target Language',
 			description: 'Put a space between each language, using ISO 639-1 codes',
 			type: 'string',
