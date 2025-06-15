@@ -1,8 +1,8 @@
-"use strict";
-const Discord = require("discord.js");
-const fetch = require("node-fetch"); 
-const {BaseControllerPlugin} = require("@clusterio/controller");
-const {InstanceActionEvent} = require("./info.js");
+'use strict';
+const Discord = require('discord.js');
+const fetch = require('node-fetch'); 
+const {BaseControllerPlugin} = require('@clusterio/controller');
+const {InstanceActionEvent} = require('./info.js');
 
 const MAX_DISCORD_MESSAGE_LENGTH = 1950;
 const MIN_CONFIDENCE_SCORE = 10.0;
@@ -76,7 +76,13 @@ class LibreTranslateAPI {
 
 class ControllerPlugin extends BaseControllerPlugin {
 	async init() {
-		this.controller.config.on('fieldChanged', (field, curr, prev) => {if (field === 'ClusterChatSync.discord_bot_token') this.connect().catch(err => {this.logger.error(`[Chat Sync] Discord bot token:\n${err.stack}`);});});
+		this.controller.config.on('fieldChanged', (field, curr, prev) => {
+			if (field === 'ClusterChatSync.discord_bot_token') {
+				this.connect().catch(err => {
+					this.logger.error(`[Chat Sync] Discord bot token:\n${err.stack}`);
+				});
+			}
+		});
 		this.controller.handle(InstanceActionEvent, this.handleInstanceAction.bind(this));
 		this.client = null;
 		await this.connect();
@@ -100,9 +106,11 @@ class ControllerPlugin extends BaseControllerPlugin {
 		this.client = new Discord.Client({intents: [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.MessageContent]});
 		this.logger.info('[Chat Sync] Logging into Discord.');
 
-		try {await this.client.login(this.controller.config.get('ClusterChatSync.discord_bot_token'))} catch (err) {
+		try {
+			await this.client.login(this.controller.config.get('ClusterChatSync.discord_bot_token'));
+		} catch (err) {
 			this.logger.error(`[Chat Sync] Discord login error:\n${err.stack}`);
-			await this.clientDestroy()
+			await this.clientDestroy();
 			return;
 		}
 
@@ -115,7 +123,9 @@ class ControllerPlugin extends BaseControllerPlugin {
 		}
 	}
 
-	async onShutdown() {await this.clientDestroy()}
+	async onShutdown() {
+		await this.clientDestroy();
+	}
 
 	async sendMessage(request, nrc_msg) {
 		const channel_id = this.controller.config.get('ClusterChatSync.discord_channel_mapping')[request.instanceName];
@@ -129,9 +139,13 @@ class ControllerPlugin extends BaseControllerPlugin {
 				this.logger.error(`[Chat Sync] Discord Channel ID ${channel_id} not found.`);
 				return;
 			}
-		} catch (err) {if (err.code !== 10003) this.logger.error(`[Chat Sync] Discord channel fetch error:\n${err.stack}`);}
+		} catch (err) {
+			if (err.code !== 10003) {
+				this.logger.error(`[Chat Sync] Discord channel fetch error:\n${err.stack}`);
+			}
+		}
 
-		if (this.controller.config.get("ClusterChatSync.datetime_on_message")) {
+		if (this.controller.config.get('ClusterChatSync.datetime_on_message')) {
 			let now = new Date();
 			nrc_msg = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')} ${nrc_msg}`
 		}
@@ -146,7 +160,9 @@ class ControllerPlugin extends BaseControllerPlugin {
 				if (nrc_lindex !== -1) {
 					nrc_cmsg = nrc_cmsg.slice(0, nrc_lindex);
 					nrc_msg = nrc_msg.slice(nrc_lindex).trim();
-				} else {nrc_msg = nrc_msg.slice(MAX_DISCORD_MESSAGE_LENGTH).trim();}
+				} else {
+					nrc_msg = nrc_msg.slice(MAX_DISCORD_MESSAGE_LENGTH).trim();
+				}
 
 				await channel.send(nrc_cmsg, {allowedMentions: {parse: []}});
 			}
@@ -156,16 +172,16 @@ class ControllerPlugin extends BaseControllerPlugin {
 	async handleInstanceAction(request, src) {
 		if (request.action === 'CHAT' || request.action === 'SHOUT') {
 			const nrc = request.content.replace(/\[special-item=.*?\]/g, '<blueprint>').replace(/<@/g, '<@\u200c>');
-			const nrc_index = nrc.indexOf(":");
+			const nrc_index = nrc.indexOf(':');
 			const nrc_username = nrc.substring(0, nrc_index);
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
-			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`)
+			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`);
 
 			if (this.controller.config.get('ClusterChatSync.use_libretranslate')) {
 				const result = await this.translator.translate(nrc_message, this.translator_language);
 
 				if (result && result.action) {
-					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`)
+					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`);
 					return `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`;
 				}
 			}			
