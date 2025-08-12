@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch'); 
 const {BaseControllerPlugin} = require('@clusterio/controller');
 const {InstanceActionEvent} = require('./info.js');
+import { ChatEvent } from "./messages";
 
 const MAX_DISCORD_MESSAGE_LENGTH = 1950;
 const MIN_CONFIDENCE_SCORE = 10.0;
@@ -182,7 +183,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 				if (result && result.action) {
 					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`);
-					return `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`;
+					this.instance.sendTo({ instanceId: this.instance.id }, new ChatEvent(this.instance.name, `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`));
 				}
 			}
 		}
