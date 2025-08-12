@@ -182,7 +182,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 				if (result && result.action) {
 					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`);
-					return `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`;
+					this.instance.sendTo({ instanceId: this.instance.id }, new ChatEvent(this.instance.name, `[color=255,255,255]\`${nrc_username}\`: ${result}[/color]`));
 				}
 			}
 		}
