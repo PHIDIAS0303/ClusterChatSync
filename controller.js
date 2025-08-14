@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fetch = require('node-fetch'); 
 const {BaseControllerPlugin} = require('@clusterio/controller');
 const {InstanceActionEvent} = require('./info.js');
-import { ChatEvent } from "./message.js";
+const {ChatEvent} = require("./message.js");
 
 const MAX_DISCORD_MESSAGE_LENGTH = 1950;
 const MIN_CONFIDENCE_SCORE = 10.0;
