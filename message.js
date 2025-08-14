@@ -1,4 +1,6 @@
-import { Type, Static } from "@sinclair/typebox";
+// import { Type, Static } from "@sinclair/typebox";
+const {Type, Static} = require("@sinclair/typebox");
+
 export class ChatEvent {
 	// declare ["constructor"]: typeof ChatEvent;
 	// as const
