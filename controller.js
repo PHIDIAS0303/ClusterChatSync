@@ -11,10 +11,10 @@ const MIN_CONFIDENCE_SCORE = 10.0;
 class LibreTranslateAPI {
     constructor(url, apiKey, logger = console) {
         if (!url || !apiKey) this.logger.error('[Chat Sync] LibreTranslate API configuration is incomplete.');
-		try {new URL(url);} catch {this.logger.error('[Chat Sync] LibreTranslate url is invalid');}
+        try {new URL(url);} catch { this.logger.error('[Chat Sync] LibreTranslate url is invalid'); }
         this.url = url.endsWith('/') ? url : url + '/';
         this.apiKey = apiKey;
-		this.logger = logger;
+        this.logger = logger;
     }
 
 	async handleResponse(response) {
@@ -24,10 +24,13 @@ class LibreTranslateAPI {
 
     async init() {
 		try {
-			this.allowedLanguages = (await this.handleResponse(await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})))?.[0]?.targets || [];
-		} catch (err) {
-			this.logger.error(`[Chat Sync] failed to initialize languages:\n${err.stack}`);
-		}
+            this.allowedLanguages = (await this.handleResponse(
+                await fetch(`${this.url}languages?api_key=${this.apiKey}`, {method: 'GET'})
+            ))?.[0]?.targets || [];
+        } catch (err) {
+            this.logger.error(`[Chat Sync] failed to initialize languages:\n${err.stack}`);
+            throw err; // Re-throw to handle it upstream
+        }
 	}
 
     async translateRequest(q, source, target) {
