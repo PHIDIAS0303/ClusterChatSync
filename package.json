@@ -2,7 +2,7 @@
   "name": "@phidias0303/clusterio_chat_sync",
   "version": "1.0.2",
   "description": "One way chat sync",
-  "main": "info.js",
+  "main": "info.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "webpack-cli --env production"
