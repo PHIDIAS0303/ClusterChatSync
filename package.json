@@ -1,15 +1,16 @@
 {
   "name": "@phidias0303/clusterio_chat_sync",
   "version": "1.0.2",
-  "description": "One way chat sync",
-  "main": "info.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "webpack-cli --env production"
-  },
+  "description": "One way chat sync. Created with the help of Cooldude2606",
+  "author": "PHIDIAS <phidias@aperx.org>",
+  "license": "MIT",
+  "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PHIDIAS0303/ClusterChatSync"
+  },
+  "bugs": {
+    "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
   },
   "keywords": [
     "aperx",
@@ -18,12 +19,11 @@
     "discord",
     "clusterio-plugin"
   ],
-  "author": "PHIDIAS <phidias@aperx.org>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
+  "main": "info.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "webpack-cli --env production"
   },
-  "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
   "peerDependencies": {
     "@clusterio/lib": "catalog:"
   },
