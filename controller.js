@@ -185,7 +185,7 @@ class ControllerPlugin extends BaseControllerPlugin {
 
 				if (result && result.action) {
 					await this.sendMessage(request, `**\`${nrc_username}\`**: ${result.passage}`);
-					this.controller.sentTo(src, new lib.InstanceRconRequest(`[color=255,255,255]\`${nrc_username}\`: ${result.passage}[/color]`));
+					this.controller.sendTo(src, new lib.InstanceSendRconRequest(`[color=255,255,255]\`${nrc_username}\`: ${result.passage}[/color]`));
 				}
 			}
 		}
