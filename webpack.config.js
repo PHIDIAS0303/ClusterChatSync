@@ -16,7 +16,7 @@ module.exports = (env = {}) => merge(common(env), {
 			name: 'ClusterChatSync',
 			library: {type: 'var', name: 'plugin_ClusterChatSync' },
 			exposes: {
-				'./': './info.ts',
+				'./': './info.js',
 				'./package.json': './package.json',
 			},
 			shared: {
