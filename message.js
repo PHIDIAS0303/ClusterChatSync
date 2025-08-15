@@ -1,33 +1,26 @@
-// import { Type, Static } from "@sinclair/typebox";
-const {Type, Static} = require("@sinclair/typebox");
+const { Type } = require("@sinclair/typebox");
 
-export class ChatEvent {
-	// declare ["constructor"]: typeof ChatEvent;
-	// as const
-	static type = "event";
-	// as const
-	static src = ["control", "instance"];
-	// as const
-	static dst = "instance";
-	// as const
-	static plugin = "global_chat";
-	static permission = null;
+class ChatEvent {
+    static type = "event";
+    static src = ["control", "instance"];
+    static dst = "instance";
+    static plugin = "global_chat";
+    static permission = null;
+    
+    static jsonSchema = Type.Object({
+        "instanceName": Type.String(),
+        "content": Type.String(),
+    });
 
-	/*
-	constructor(
-		public instanceName: string,
-		public content: string,
-	) {
-	}
-	*/
+    constructor(instanceName, content) {
+        this.instanceName = instanceName;
+        this.content = content;
+    }
 
-	static jsonSchema = Type.Object({
-		"instanceName": Type.String(),
-		"content": Type.String(),
-	});
-
-	// json: Static<typeof ChatEvent.jsonSchema>
-	static fromJSON(json) {
-		return new this(json.instanceName, json.content);
-	}
+    static fromJSON(json) {
+        return new ChatEvent(json.instanceName, json.content);
+    }
 }
+
+// If you need to use this class in other files
+module.exports = { ChatEvent };
