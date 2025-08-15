@@ -25,19 +25,19 @@
   },
   "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
   "peerDependencies": {
-    "@clusterio/lib": "workspace:^"
+    "@clusterio/lib": "^2.0.0-alpha.21"
   },
   "devDependencies": {
-    "@clusterio/lib": "workspace:^",
-    "@clusterio/web_ui": "workspace:^",
-    "webpack": "catalog:",
-    "webpack-cli": "catalog:",
-    "webpack-merge": "catalog:"
+    "@clusterio/lib": "^2.0.0-alpha.21",
+    "@clusterio/web_ui": "^2.0.0-alpha.21",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "discord.js": "catalog:",
-    "@sinclair/typebox": "catalog:",
-    "node-fetch": "catalog:"
+    "discord.js": "^14.19.3",
+    "@sinclair/typebox": "^0.30.4",
+    "node-fetch": "^3.3.2"
   },
   "publishConfig": {
     "access": "public"
