@@ -1,5 +1,6 @@
 'use strict';
 const Discord = require('discord.js');
+const lib = require('@clusterio/lib');
 const {BaseControllerPlugin} = require('@clusterio/controller');
 const {InstanceActionEvent} = require('./info.js');
 
