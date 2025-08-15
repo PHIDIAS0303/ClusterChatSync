@@ -2,7 +2,7 @@
 const lib = require('@clusterio/lib');
 
 class InstanceActionEvent {
-	static type = 'event';
+	static type = 'requests';
 	static src = 'instance';
 	static dst = 'controller';
 	static plugin = 'ClusterChatSync';
