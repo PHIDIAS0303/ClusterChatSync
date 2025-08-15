@@ -2,7 +2,7 @@
 const lib = require('@clusterio/lib');
 
 class InstanceActionEvent {
-	static type = 'requests';
+	static type = 'request';
 	static src = 'instance';
 	static dst = 'controller';
 	static plugin = 'ClusterChatSync';
@@ -22,6 +22,8 @@ class InstanceActionEvent {
 	static fromJSON(json) {
 		return new this(json.instanceName, json.action, json.content);
 	}
+
+	static Response = lib.JsonString;
 }
 
 const plugin = {
