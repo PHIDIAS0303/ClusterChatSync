@@ -1,8 +1,8 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import fetch from 'node-fetch';
 import { BaseControllerPlugin } from '@clusterio/controller';
-import { InstanceActionEvent } from './info.ts';
-import { ChatEvent } from './message.ts';
+import { InstanceActionEvent } from './info';
+import { ChatEvent } from './message';
 
 const MAX_DISCORD_MESSAGE_LENGTH = 1950;
 const MIN_CONFIDENCE_SCORE = 10.0;

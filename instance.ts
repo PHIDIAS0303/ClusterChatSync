@@ -1,6 +1,6 @@
 import * as lib from "@clusterio/lib";
 import { BaseInstancePlugin } from "@clusterio/host";
-import { InstanceActionEvent } from "./info.ts";
+import { InstanceActionEvent } from "./info";
 
 type MessageQueueItem = [string, unknown]; // [action, content]
 type ControllerEvent = 'connect' | 'disconnect' | string;
