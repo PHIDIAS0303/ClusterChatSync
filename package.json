@@ -36,8 +36,7 @@
   },
   "dependencies": {
     "discord.js": "catalog:",
-    "@sinclair/typebox": "catalog:",
-    "node-fetch": "catalog:"
+    "@sinclair/typebox": "catalog:"
   },
   "publishConfig": {
     "access": "public"
