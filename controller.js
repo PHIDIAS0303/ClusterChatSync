@@ -1,6 +1,5 @@
 'use strict';
 const Discord = require('discord.js');
-const fetch = require('node-fetch'); 
 const {BaseControllerPlugin} = require('@clusterio/controller');
 const {InstanceActionEvent} = require('./info.js');
 const {ChatEvent} = require("./message.js");
