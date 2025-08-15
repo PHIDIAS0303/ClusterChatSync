@@ -5,12 +5,16 @@ export class InstanceActionEvent {
     static src = 'instance';
     static dst = 'controller';
     static plugin = 'ClusterChatSync';
+    
+    instanceName: string;
+    action: string;
+    content: string;
 
-    constructor(
-        public instanceName: string,
-        public action: string,
-        public content: string
-    ) {}
+    constructor(instanceName: string, action: string, content: string) {
+        this.instanceName = instanceName;
+        this.action = action;
+        this.content = content;
+    }
 
     static jsonSchema = {
         type: 'object',
