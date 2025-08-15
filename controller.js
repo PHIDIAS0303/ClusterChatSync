@@ -188,8 +188,6 @@ class ControllerPlugin extends BaseControllerPlugin {
 				}
 			}
 		}
-
-		return;
 	}
 }
 
