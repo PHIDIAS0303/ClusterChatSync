@@ -52,30 +52,6 @@ const plugin = {
 				'S1': '123'
 			},
 		},
-		'ClusterChatSync.use_libretranslate': {
-			title: 'Translate Message',
-			description: 'Using self host or paid service of libretranslate',
-			type: 'boolean',
-			initialValue: false
-		},
-		'ClusterChatSync.libretranslate_url': {
-			title: 'Translate Server URL',
-			description: 'Including http protocol, and the port if needed',
-			type: 'string',
-			initialValue: 'http://localhost:5000'
-		},
-		'ClusterChatSync.libretranslate_key': {
-			title: 'Translate Server API Key',
-			description: 'The API key for the translate server',
-			type: 'string',
-			initialValue: '123456'
-		},
-		'ClusterChatSync.libretranslate_language': {
-			title: 'Translate Server Target Language',
-			description: 'Put a space between each language, using ISO 639-1 codes',
-			type: 'string',
-			initialValue: 'zh-Hant en'
-		},
 	},
 	messages: [InstanceActionEvent],
 };
