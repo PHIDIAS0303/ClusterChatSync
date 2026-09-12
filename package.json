@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
   },
+  "type": "module",
   "keywords": [
     "aperx",
     "clusterio",
