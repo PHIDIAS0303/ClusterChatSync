@@ -20,7 +20,7 @@
     "discord",
     "clusterio-plugin"
   ],
-  "main": "info.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "webpack-cli --env production"
