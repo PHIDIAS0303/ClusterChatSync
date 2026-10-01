@@ -26,11 +26,11 @@
     "prepare": "webpack-cli --env production"
   },
   "peerDependencies": {
-    "@clusterio/lib": "workspace:"
+    "@clusterio/lib": "workspace:^"
   },
   "devDependencies": {
-    "@clusterio/lib": "workspace:",
-    "@clusterio/web_ui": "workspace:",
+    "@clusterio/lib": "workspace:^",
+    "@clusterio/web_ui": "workspace:^",
     "webpack": "catalog:",
     "webpack-cli": "catalog:",
     "webpack-merge": "catalog:"
