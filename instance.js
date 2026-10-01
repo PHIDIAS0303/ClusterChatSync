@@ -1,7 +1,7 @@
 'use strict';
 const lib = require('@clusterio/lib');
 const {BaseInstancePlugin} = require('@clusterio/host');
-const {InstanceActionEvent} = require('./info.js');
+const {InstanceActionEvent} = require('./index.js');
 
 class InstancePlugin extends BaseInstancePlugin {
 	async init() {
