@@ -31,7 +31,7 @@ const plugin = {
 	title: 'Cluster Chat Sync',
 	description: 'One way chat sync.',
 	instanceEntrypoint: 'instance.js',
-	controllerEntrypoint: 'controller',
+	controllerEntrypoint: 'controller.js',
 	controllerConfigFields: {
 		'ClusterChatSync.discord_bot_token': {
 			title: 'Discord Bot Token',	
