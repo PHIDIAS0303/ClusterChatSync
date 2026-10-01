@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const lib = require('@clusterio/lib');
 const {BaseControllerPlugin} = require('@clusterio/controller');
-const {InstanceActionEvent} = require('./info.js');
+const {InstanceActionEvent} = require('./index.js');
 
 const MAX_DISCORD_MESSAGE_LENGTH = 1950;
 
