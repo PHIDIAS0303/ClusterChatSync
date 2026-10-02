@@ -102,6 +102,14 @@ class ControllerPlugin extends BaseControllerPlugin {
 			const nrc_username = nrc.substring(0, nrc_index);
 			const nrc_message = nrc.substring(nrc_index + 1).trim();
 			await this.sendMessage(request, `**\`${nrc_username}\`**: ${nrc_message}`);
+		} else if (request.action === 'JOIN') {
+			await this.sendMessage(request, `**\`${nrc_username}\`** joined the game`);
+		} else if (request.action === 'LEAVE') {
+			await this.sendMessage(request, `**\`${nrc_username}\`** left the game`);
+		} else if (request.action === 'KICK') {
+			await this.sendMessage(request, `**\`${nrc_username}\`** was kicked from the game`);
+		} else if (request.action === 'BAN') {
+			await this.sendMessage(request, `**\`${nrc_username}\`** was banned from the game`);
 		}
 	}
 }
