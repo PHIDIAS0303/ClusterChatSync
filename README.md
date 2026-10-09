@@ -1,6 +1,6 @@
 Cluster Chat Sync
 ========================
 
-This is a custom chat sync, one-way only at this time.
+One way chat forward to Discord.
 
 https://github.com/clusterio/clusterio
