@@ -2,7 +2,7 @@ import type {InstancePluginContext} from '@clusterio/host';
 import {ChatEvent} from './index.js';
 
 export default async function(context: InstancePluginContext) {
-	const {instance, host, plugin} = context;
+	const {instance, host, logger, plugin} = context;
 	let queue: [string, string][] = [];
 
 	instance.hooks.controllerConnectionEvent.attach(plugin.name, async (event) => {
@@ -26,6 +26,11 @@ export default async function(context: InstancePluginContext) {
 	});
 
 	instance.hooks.output.attach(plugin.name, async (output) => {
+        if (output.type === 'info') {
+            logger.info(output.message)
+            return;
+        }
+
 		if (output.type !== 'action') {
             return;
         }
