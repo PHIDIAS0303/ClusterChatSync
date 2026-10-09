@@ -122,6 +122,8 @@ export default async function(context: ControllerPluginContext) {
 
         if (verb) {
             await sendMessage(instanceName, `**\`${content.trim()}\`** ${verb}`);
+        } else {
+            await sendMessage(instanceName, `unknown action ${action} **\`${content.trim()}\`**`);
         }
     });
 
