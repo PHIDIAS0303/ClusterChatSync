@@ -1,6 +1,7 @@
-Cluster Chat Sync
+Chat Relay
 ========================
 
-One way chat forward to Discord.
+One way chat relay to Discord.
 
+Plugin of Clusterio
 https://github.com/clusterio/clusterio

@@ -24,10 +24,10 @@ export default async function(context: ControllerPluginContext) {
 
     const connect = async () => {
         await clientDestroy();
-        const token = controller.config.get('ClusterChatSync.discord_bot_token') as string | undefined;
+        const token = controller.config.get('chat_relay.discord_bot_token') as string | undefined;
 
         if (!token) {
-            logger.error('[Chat Sync] Discord bot token not configured.');
+            logger.error('[Chat Relay] Discord bot token not configured.');
             return;
         }
 
@@ -37,23 +37,23 @@ export default async function(context: ControllerPluginContext) {
             Discord.GatewayIntentBits.MessageContent,
         ]});
 
-        logger.info('[Chat Sync] Logging into Discord.');
+        logger.info('[Chat Relay] Logging into Discord.');
 
         try {
             await client.login(token);
         } catch (err) {
-            logger.error(`[Chat Sync] Discord login error:\n${(err as Error).stack}`);
+            logger.error(`[Chat Relay] Discord login error:\n${(err as Error).stack}`);
             await clientDestroy();
             return;
         }
 
-        logger.info('[Chat Sync] Logged in Discord successfully.');
+        logger.info('[Chat Relay] Logged in Discord successfully.');
     };
 
     const sendMessage = async (instanceName: string, message: string) => {
         if (!client) return;
 
-        const mapping = controller.config.get('ClusterChatSync.discord_channel_mapping') as Record<string, string>;
+        const mapping = controller.config.get('chat_relay.discord_channel_mapping') as Record<string, string>;
         const channelId = mapping?.[instanceName];
         if (!channelId) return;
 
@@ -63,19 +63,19 @@ export default async function(context: ControllerPluginContext) {
             channel = await client.channels.fetch(channelId);
         } catch (err) {
             if ((err as {code?: number}).code !== 10003) {
-                logger.error(`[Chat Sync] Discord channel fetch error:\n${(err as Error).stack}`);
+                logger.error(`[Chat Relay] Discord channel fetch error:\n${(err as Error).stack}`);
             }
             return;
         }
 
         if (channel === null || !channel.isSendable()) {
-            logger.error(`[Chat Sync] Discord Channel ID ${channelId} is not a usable channel.`);
+            logger.error(`[Chat Relay] Discord Channel ID ${channelId} is not a usable channel.`);
             return;
         }
 
         let nrcMsg = message;
 
-        if (controller.config.get('ClusterChatSync.datetime_on_message')) {
+        if (controller.config.get('chat_relay.datetime_on_message')) {
             const now = new Date();
             const p = (n: number) => String(n).padStart(2, '0');
             const stamp = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())} ${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
@@ -126,9 +126,9 @@ export default async function(context: ControllerPluginContext) {
     });
 
     controller.config.on('fieldChanged', (field) => {
-        if (field === 'ClusterChatSync.discord_bot_token') {
+        if (field === 'chat_relay.discord_bot_token') {
             connect().catch(err => {
-                logger.error(`[Chat Sync] Discord bot token:\n${(err as Error).stack}`);
+                logger.error(`[Chat Relay] Discord bot token:\n${(err as Error).stack}`);
             });
         }
     });

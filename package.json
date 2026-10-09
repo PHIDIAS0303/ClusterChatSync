@@ -1,16 +1,16 @@
 {
-  "name": "@phidias0303/clusterio_chat_sync",
+  "name": "@phidias0303/chat_relay",
   "version": "1.0.3",
-  "description": "One way chat forward to Discord",
+  "description": "One way chat relay to Discord",
   "author": "PHIDIAS <phidias@aperx.org>",
   "license": "MIT",
-  "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
+  "homepage": "https://github.com/PHIDIAS0303/chat_relay#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PHIDIAS0303/ClusterChatSync"
+    "url": "git+https://github.com/PHIDIAS0303/chat_relay"
   },
   "bugs": {
-    "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
+    "url": "https://github.com/PHIDIAS0303/chat_relay/issues"
   },
   "type": "module",
   "keywords": [
