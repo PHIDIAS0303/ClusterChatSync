@@ -9,9 +9,6 @@ const ACTION_VERBS: Record<string, string> = {
     KICK: 'was kicked from the game',
     BAN: 'was banned from the game',
 };
-const escapeMentions = (content: string) => content
-    .replace(/\[special-item=.*?\]/g, '<blueprint>')
-    .replace(/<@/g, '<@\u200c>');
 
 export default async function(context: ControllerPluginContext) {
     const {controller, plugin, logger} = context;
@@ -84,7 +81,7 @@ export default async function(context: ControllerPluginContext) {
         if (controller.config.get('ClusterChatSync.datetime_on_message')) {
             const now = new Date();
             const p = (n: number) => String(n).padStart(2, '0');
-            const stamp = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}` + ` ${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
+            const stamp = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())} ${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
             nrcMsg = `${stamp} ${nrcMsg}`;
         }
 
@@ -96,6 +93,7 @@ export default async function(context: ControllerPluginContext) {
         }
 
         let remaining = nrcMsg;
+
         while (remaining.length > 0) {
             let chunk = remaining.slice(0, MAX_DISCORD_MESSAGE_LENGTH);
             const lastSpace = chunk.lastIndexOf(' ');
@@ -115,7 +113,7 @@ export default async function(context: ControllerPluginContext) {
         const {instanceName, action, content} = request;
 
         if (action === 'CHAT' || action === 'SHOUT') {
-            const nrc = escapeMentions(content);
+            const nrc = content.replace(/\[special-item=.*?\]/g, '<blueprint>').replace(/<@/g, '<@\u200c>');
             const index = nrc.indexOf(':');
             const username = index === -1 ? nrc.trim() : nrc.slice(0, index);
             const msg = index === -1 ? '' : nrc.slice(index + 1).trim();
