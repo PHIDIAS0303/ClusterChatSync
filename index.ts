@@ -31,7 +31,6 @@ export const plugin: lib.PluginDeclaration = {
 	name: 'ClusterChatSync',
 	title: 'Cluster Chat Sync',
 	description: 'One way chat forward to Discord.',
-	webEntrypoint: './web',
 	instanceEntrypoint: 'dist/node/instance.js',
 	controllerEntrypoint: 'dist/node/controller.js',
 	controllerConfigFields: {
@@ -48,7 +47,7 @@ export const plugin: lib.PluginDeclaration = {
 		},
 		'ClusterChatSync.discord_channel_mapping': {
 			title: 'Channels',
-			description: 'Putting the discord channel id and instance relations here',
+			description: 'Instance and Discord channel ID relations',
 			type: 'object',
 			initialValue: {
 				'S1': '123'
