@@ -39,6 +39,7 @@ export const plugin: lib.PluginDeclaration = {
 	name: 'ClusterChatSync',
 	title: 'Cluster Chat Sync',
 	description: 'One way chat forward to Discord.',
+	webEntrypoint: './web',
 	instanceEntrypoint: 'dist/node/instance.js',
 	controllerEntrypoint: 'dist/node/controller.js',
 	controllerConfigFields: {
