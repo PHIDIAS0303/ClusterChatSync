@@ -1,4 +1,4 @@
-import type {ControllerPluginContext} from "@clusterio/controller";
+import type {ControllerPluginContext} from '@clusterio/controller';
 import {ChatEvent} from './index.js';
 import * as Discord from 'discord.js';
 
@@ -11,19 +11,19 @@ const ACTION_VERBS: Record<string, string> = {
 };
 
 export default async function(context: ControllerPluginContext) {
-    const {controller, plugin, logger} = context;
-
+    const {controller, logger, plugin} = context;
     let client: Discord.Client | null = null;
 
     const clientDestroy = async () => {
-        const old = client;
+        if (client) {
+            await client.destroy();
+        }
+
         client = null;
-        if (old) await old.destroy();
     };
 
     const connect = async () => {
         await clientDestroy();
-
         const token = controller.config.get('ClusterChatSync.discord_bot_token') as string | undefined;
 
         if (!token) {
@@ -31,18 +31,16 @@ export default async function(context: ControllerPluginContext) {
             return;
         }
 
-        const discordClient = new Discord.Client({intents: [
+        client = new Discord.Client({intents: [
             Discord.GatewayIntentBits.Guilds,
             Discord.GatewayIntentBits.GuildMessages,
             Discord.GatewayIntentBits.MessageContent,
         ]});
 
-        client = discordClient;
-
         logger.info('[Chat Sync] Logging into Discord.');
 
         try {
-            await discordClient.login(token);
+            await client.login(token);
         } catch (err) {
             logger.error(`[Chat Sync] Discord login error:\n${(err as Error).stack}`);
             await clientDestroy();
@@ -53,8 +51,7 @@ export default async function(context: ControllerPluginContext) {
     };
 
     const sendMessage = async (instanceName: string, message: string) => {
-        const discordClient = client;
-        if (!discordClient) return;
+        if (!client) return;
 
         const mapping = controller.config.get('ClusterChatSync.discord_channel_mapping') as Record<string, string>;
         const channelId = mapping?.[instanceName];
@@ -63,7 +60,7 @@ export default async function(context: ControllerPluginContext) {
         let channel: Discord.Channel | null;
 
         try {
-            channel = await discordClient.channels.fetch(channelId);
+            channel = await client.channels.fetch(channelId);
         } catch (err) {
             if ((err as {code?: number}).code !== 10003) {
                 logger.error(`[Chat Sync] Discord channel fetch error:\n${(err as Error).stack}`);
