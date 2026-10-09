@@ -27,6 +27,14 @@ export class ChatEvent {
 	}
 }
 
+declare module '@clusterio/lib' {
+    interface ControllerConfigFields {
+        'ClusterChatSync.discord_bot_token': string;
+        'ClusterChatSync.datetime_on_message': boolean;
+		'ClusterChatSync.discord_channel_mapping': Record<string, string>;
+	}
+}
+
 export const plugin: lib.PluginDeclaration = {
 	name: 'ClusterChatSync',
 	title: 'Cluster Chat Sync',
