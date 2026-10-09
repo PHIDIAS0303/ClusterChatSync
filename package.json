@@ -1,7 +1,7 @@
 {
   "name": "@phidias0303/clusterio_chat_sync",
-  "version": "1.0.2",
-  "description": "One way chat sync. Created with the help of Cooldude2606",
+  "version": "1.0.3",
+  "description": "One way chat forward to Discord",
   "author": "PHIDIAS <phidias@aperx.org>",
   "license": "MIT",
   "homepage": "https://github.com/PHIDIAS0303/ClusterChatSync#readme",
@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/PHIDIAS0303/ClusterChatSync/issues"
   },
-  "type": "commonjs",
+  "type": "module",
   "keywords": [
     "aperx",
     "clusterio",
@@ -20,10 +20,10 @@
     "discord",
     "clusterio-plugin"
   ],
-  "main": "index.js",
+  "main": "dist/node/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "webpack-cli --env production"
+		"prepare": "tsc --build && webpack-cli --mode production",
+		"test": "echo \"Error: run tests from root\" && exit 1"
   },
   "peerDependencies": {
     "@clusterio/lib": "workspace:^"

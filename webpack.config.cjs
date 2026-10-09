@@ -5,20 +5,19 @@ const { merge } = require('webpack-merge');
 
 const common = require('@clusterio/web_ui/webpack.common');
 
-module.exports = (env = {}) => merge(common(env), {
+module.exports = (env = {}, argv = {}) => merge(common(env, argv), {
 	context: __dirname,
-	entry: './web/index.jsx',
+	entry: './web/index.tsx',
 	output: {
 		path: path.resolve(__dirname, 'dist', 'web'),
 	},
 	plugins: [
 		new webpack.container.ModuleFederationPlugin({
 			name: 'ClusterChatSync',
-			library: {type: 'window', name: 'plugin_ClusterChatSync' },
+			library: {type: 'var', name: 'plugin_ClusterChatSync'},
 			exposes: {
-				'./': './index.js',
-				'./package.json': './package.json',
-				'./web': './web/index.jsx',
+				'./': './index.ts',
+				'./package.json': './package.json'
 			},
 			shared: {
 				'@clusterio/lib': {import: false},
