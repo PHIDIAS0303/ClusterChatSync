@@ -26,8 +26,10 @@ export default async function(context: InstancePluginContext) {
 	});
 
 	instance.hooks.output.attach(plugin.name, async (output) => {
-		if (output.type !== 'action' && output.type !== 'info') {
-            return;
+		if (output.type !== 'action') {
+            if (output.type !== 'info') {
+                return;
+            }
         }
 
 		if (host.connector.connected) {
