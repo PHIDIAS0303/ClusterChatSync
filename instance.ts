@@ -40,8 +40,4 @@ export default async function(context: InstancePluginContext) {
 			queue.push([output.action, output.message]);
 		}
 	});
-
-	instance.hooks.controllerConnectionEvent.attach(plugin.name, async (event) => {
-
-    });
 }
