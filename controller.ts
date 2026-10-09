@@ -74,12 +74,10 @@ export default async function(context: ControllerPluginContext) {
             return;
         }
 
-        if (channel === null || !channel.isTextBased()) {
-            logger.error(`[Chat Sync] Discord Channel ID ${channelId} is not a usable text channel.`);
+        if (channel === null || !channel.isSendable()) {
+            logger.error(`[Chat Sync] Discord Channel ID ${channelId} is not a usable channel.`);
             return;
         }
-
-        const textChannel = channel;
 
         let nrcMsg = message;
 
@@ -90,7 +88,7 @@ export default async function(context: ControllerPluginContext) {
             nrcMsg = `${stamp} ${nrcMsg}`;
         }
 
-        const send = (content: string) => textChannel.send({content, allowedMentions: {parse: []}});
+        const send = (content: string) => channel.send({content, allowedMentions: {parse: []}});
 
         if (nrcMsg.length <= MAX_DISCORD_MESSAGE_LENGTH) {
             await send(nrcMsg);
