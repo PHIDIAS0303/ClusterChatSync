@@ -46,7 +46,8 @@ export const plugin: lib.PluginDeclaration = {
 		'chat_relay.discord_bot_token': {
 			title: 'Discord Bot Token',	
 			description: 'API Token',
-			type: 'credential'
+			type: 'string',
+			credential: ['controller']
 		},
 		'chat_relay.datetime_on_message': {
 			title: 'Message Datetime',
