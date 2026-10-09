@@ -46,7 +46,7 @@ export const plugin: lib.PluginDeclaration = {
 			initialValue: true
 		},
 		'ClusterChatSync.discord_channel_mapping': {
-			title: 'Channels',
+			title: 'Discord Channels',
 			description: 'Instance and Discord channel ID relations',
 			type: 'object',
 			initialValue: {
