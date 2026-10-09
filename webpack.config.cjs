@@ -13,8 +13,8 @@ module.exports = (env = {}, argv = {}) => merge(common(env, argv), {
 	},
 	plugins: [
 		new webpack.container.ModuleFederationPlugin({
-			name: 'ClusterChatSync',
-			library: {type: 'var', name: 'plugin_ClusterChatSync'},
+			name: 'chat_relay',
+			library: {type: 'var', name: 'plugin_chat_relay'},
 			exposes: {
 				'./': './index.ts',
 				'./package.json': './package.json'
