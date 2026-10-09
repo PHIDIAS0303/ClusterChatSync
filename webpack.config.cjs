@@ -1,8 +1,7 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const { merge } = require('webpack-merge');
-
+const {merge} = require('webpack-merge');
 const common = require('@clusterio/web_ui/webpack.common');
 
 module.exports = (env = {}, argv = {}) => merge(common(env, argv), {
@@ -17,7 +16,8 @@ module.exports = (env = {}, argv = {}) => merge(common(env, argv), {
 			library: {type: 'var', name: 'plugin_chat_relay'},
 			exposes: {
 				'./': './index.ts',
-				'./package.json': './package.json'
+				'./package.json': './package.json',
+				'./web': './web/index.tsx',
 			},
 			shared: {
 				'@clusterio/lib': {import: false},
